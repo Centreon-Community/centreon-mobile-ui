@@ -216,9 +216,9 @@ $result_query_host_status = mysql_query ($query_host_status);
 
 <!--Import CSS & Javascript-->
 	
-	<link href="http://code.jquery.com/mobile/latest/jquery.mobile.min.css" rel="stylesheet" type="text/css" />
-	<script src="http://code.jquery.com/jquery-1.7.1.min.js"></script>
-	<script src="http://code.jquery.com/mobile/latest/jquery.mobile.min.js"></script>
+	<link href="../css/jquery.mobile.min.css" rel="stylesheet" type="text/css" />
+	<script src="js/jquery.min.js"></script>
+	<script src="js/jquery.mobile.min.js"></script>
 	<link href="../css/style-mobile.css" rel="stylesheet" type="text/css"/>
 	<script type="text/javascript" src="js/mobile-UI.js"></script>
 
@@ -449,7 +449,7 @@ $result_query_host_status = mysql_query ($query_host_status);
 										<div>
 											<table class="tbl-host-status">
 												<tr>';
-													if ($obj_opt_icon_show->opt_val == 1)
+													if ($obj_opt_icon_show->opt_val == 1) && !empty($obj_query_host_status->icon_image))
 														{
 														echo '	<td class="td1-host-status">
 																	<img src="icone.php?HostIconPath='.$obj_query_host_status->icon_image.'&IconSize='.$obj_opt_icon_size->opt_val.'&hst=1" />
