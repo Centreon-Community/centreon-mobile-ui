@@ -19,7 +19,8 @@ $count_verify_opts = mysql_num_rows ($result_verify_opts);
 if ($count_verify_opts != '7')
 	{
 	echo $count_verify_opts;
-	mysql_query ('DELETE FROM '.$conf_centreon['db'].'.mui_opts WHERE user_id = "'.$centreon->user->user_id.'"');
+	$query_delete_opts = 'DELETE FROM '.$conf_centreon['db'].'.mui_opts WHERE user_id = "'.$centreon->user->user_id.'"';
+	mysql_query ($query_delete_opts);
 	$create_opts = 	'INSERT INTO 
 					'.$conf_centreon['db'].'.mui_opts (opt_type, opt_label, opt_val, user_id) 
 					VALUES 
