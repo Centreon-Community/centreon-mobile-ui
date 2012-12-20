@@ -12,34 +12,10 @@
 <!--Import CSS & Javascript-->
 	
 	<link href="../css/themes/default/jquery.mobile.min.css" rel="stylesheet" type="text/css" />
-	<script src="js/jquery.min.js"></script>
+	<script src="js/jquery.min.js"></script><script type="text/javascript" src="js/mobile-UI.js"></script>
 	<script src="js/jquery.mobile.min.js"></script>
 	<link href="../css/style-mobile.css" rel="stylesheet" type="text/css"/>
-	<!--<script type="text/javascript" src="js/mobile-UI.js"></script>-->
+	
 	
 </head>
 <body>
-
-<script>
-/*Personnal JS functions
-Thx ADes :)
-/Including jquery-mobile global configuration override
-*/
-$(document).on('pagehide', function (e) {
-    var page = $(e.target);
-    if (!$.mobile.page.prototype.options.domCache
-        && (!page.attr('data-dom-cache')
-            || page.attr('data-dom-cache') == "false")
-        ) {
-        page.remove();
-    }
-	
-	});
-
-$(document).bind('mobileinit',function(){
-   $.mobile.selectmenu.prototype.options.nativeMenu = false;
-   $.mobile.page.prototype.options.domCache = false;
-   $.mobile.ajaxEnabled = true;
-   $.mobile.changePage.defaults.reloadPage = false;
-});
-</script>
