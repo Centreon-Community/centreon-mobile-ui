@@ -5,6 +5,9 @@
 //général
 /////////////////////////////////
 
+//poller type could be: ndo, shinken,
+$poller_type = "ndo" 
+
 //theme
 $result_opt_theme = mysql_query('SELECT * FROM mui_opts mui_opts WHERE (mui_opts.opt_type = "opt_gen") AND (mui_opts.opt_label = "Theme")');
 $row_opt_theme = mysql_fetch_array ($result_opt_theme);				
