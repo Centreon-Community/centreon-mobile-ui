@@ -1,6 +1,10 @@
 /***********************
 General
 ***********************/
+table
+{
+	font-size:8pt;
+}
 td	
 	{
 		white-space: normal;
@@ -15,7 +19,7 @@ div
 
 .tbl_def	/*Classe pour des tableaux en 100%*/
 	{
-	width:100%;
+	width:1  00%;
 	}
 .tbl-def	/*Classe pour des tableaux en 100%*/
 	{
