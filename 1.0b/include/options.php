@@ -10,7 +10,7 @@ require_once "include_first.php";
 //--------------------------------------------------------------------------------------------------------------------------------------------
 
 include_once "common.php";
-
+include ("header.php");
 
 
 //--------------------------------------------------------------------------------------------------------------------------------------------					
@@ -36,34 +36,16 @@ if(isset($_POST['soumettre']))
 	mysql_query ('UPDATE '.$conf_centreon['db'].'.mui_opts SET opt_val ="'.$_POST['suffixe_maps'].'" WHERE mui_opts.opt_type = "opt_weathermap" AND mui_opts.opt_label ="SuffixeMaps" AND mui_opts.user_id = "'.$centreon->user->user_id.'"');
 	mysql_query ('UPDATE '.$conf_centreon['db'].'.mui_opts SET opt_val = "'.$_POST['show_suffixed_maps'].'" WHERE mui_opts.opt_type = "opt_weathermap" AND mui_opts.opt_label ="ShowSuffixedMaps" AND mui_opts.user_id = "'.$centreon->user->user_id.'"');
 	}		
-	
+
+
 ?>
 
 <!-----------------------------------------------------------------------------------------------------------------
 HTML
 ------------------------------------------------------------------------------------------------------------------>
 
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
-<html xmlns="http://www.w3.org/1999/xhtml">
-<head>
-	<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-	<title>Centreon - IT & Network Monitoring</title>
-	<link rel="shortcut icon" href="./img/favicon.ico"/>
-	<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
-	<meta name="Generator" content="Centreon - Copyright (C) 2005 - 2010 Open Source Matters. All rights reserved." />
-	<meta name="robots" content="index, nofollow" />
-	<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
 
-<!--Import CSS & Javascript-->	
-	<link href="http://code.jquery.com/mobile/latest/jquery.mobile.min.css" rel="stylesheet" type="text/css" />
-	<link href="../css/style-mobile.css" rel="stylesheet" type="text/css"/>
-	<script src="http://code.jquery.com/jquery-1.7.1.min.js"></script>
-	<script type="text/javascript" src="js/mobile-UI.js"></script>
-	<script src="http://code.jquery.com/mobile/latest/jquery.mobile.min.js"></script>
-	
-</head>
-
-<body <?php if (isset ($_POST['soumettre'])){echo 'onLoad="window.location.reload()"';}?>>
+<?php if (isset ($_POST['soumettre'])){header("location:options.php");}?>
 	<div data-role="page">
 	
 		<div data-role="header" data-theme="<?php echo $theme;?>">

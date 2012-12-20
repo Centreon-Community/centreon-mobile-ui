@@ -201,30 +201,10 @@ else {
 
 $result_query_host_status = mysql_query ($query_host_status);
 
+include ("header.php");
 ?>
 
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
-<html xmlns="http://www.w3.org/1999/xhtml">
-<head>
-	<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-	<title>Centreon - IT & Network Monitoring</title>
-	<link rel="shortcut icon" href="./img/favicon.ico"/>
-	<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
-	<meta name="robots" content="index, nofollow" />
-	<!--<meta name="viewport" content="width=479px" />-->
-	<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
 
-<!--Import CSS & Javascript-->
-	
-	<link href="../css/jquery.mobile.min.css" rel="stylesheet" type="text/css" />
-	<script src="js/jquery.min.js"></script>
-	<script src="js/jquery.mobile.min.js"></script>
-	<link href="../css/style-mobile.css" rel="stylesheet" type="text/css"/>
-	<script type="text/javascript" src="js/mobile-UI.js"></script>
-
-
-</head>
-<body>
     <div data-role="page">
 	
         <div data-role="header" data-theme="<?php echo $theme;?>">
@@ -243,8 +223,9 @@ $result_query_host_status = mysql_query ($query_host_status);
 					</td>
 				</tr>
 				<tr>
+		
 					<td width="100%" align="center">
-						<form method="post">
+						<form method="post" id="SelectHosts">
 							<fieldset data-role="fieldcontain">
 								<select name="host" onChange="location = this.options[this.selectedIndex].value">
 									<option <?php if ($inerror == 2) {echo "selected ";} echo 'value="hosts.php?inerror=2"';?>><?php echo _("All hosts")?></option>
@@ -272,11 +253,11 @@ $result_query_host_status = mysql_query ($query_host_status);
 							<fieldset data-role="fieldcontain">
 								<select name="pge_number" onChange="location = this.options[this.selectedIndex].value">							
 									<?php
-										
+												echo "<option value='hosts.php?page=0&nb='.$nb.'&inerror='.$inerror.'>&nbsp; </option>";
 												for($i = 0 ; $i < $max_pg ; $i++) 
 													{
 													if ($i == $page)
-														{echo '<option selected value="hosts.php?page='.$i.'&nb='.$nb.'&inerror='.$inerror.'';
+													{	echo '<option selected value="hosts.php?page='.$i.'&nb='.$nb.'&inerror='.$inerror.'';
 															if (isset ($_POST['search_input']))
 															{echo '&search='.$_POST['search_input'].'';}
 															elseif (isset ($_GET['search']))
@@ -449,7 +430,7 @@ $result_query_host_status = mysql_query ($query_host_status);
 										<div>
 											<table class="tbl-host-status">
 												<tr>';
-													if ($obj_opt_icon_show->opt_val == 1) && !empty($obj_query_host_status->icon_image))
+													if ($obj_opt_icon_show->opt_val == 1)
 														{
 														echo '	<td class="td1-host-status">
 																	<img src="icone.php?HostIconPath='.$obj_query_host_status->icon_image.'&IconSize='.$obj_opt_icon_size->opt_val.'&hst=1" />

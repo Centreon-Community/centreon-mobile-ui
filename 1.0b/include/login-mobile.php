@@ -10,10 +10,11 @@
 	<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
 	
 <!--Import CSS & Javascript-->	
-	<link href="http://code.jquery.com/mobile/latest/jquery.mobile.min.css" rel="stylesheet" type="text/css" />
-	<link href="../css/style-mobile.css" rel="stylesheet" type="text/css"/>
-	<script src="http://code.jquery.com/jquery-1.7.1.min.js"></script>
-	<script type="text/javascript" src="js/mobile-UI.js"></script>
+	<link href="modules/mobile-UI/css/themes/default/jquery.mobile.min.css" rel="stylesheet" type="text/css" />
+	<script src="modules/mobile-UI/include/js/jquery.min.js"></script>
+
+	<link href="modules/mobile-UI/css/style-mobile.css" rel="stylesheet" type="text/css"/>
+	<script type="text/javascript" src="modules/mobile-UI/include/js/mobile-UI.js"></script>
 	
 	<script type="text/javascript">
 		$(document).bind("mobileinit", function(){
@@ -22,7 +23,7 @@
 				});
 			});
 	</script>
-	<script src="http://code.jquery.com/mobile/latest/jquery.mobile.min.js"></script>
+		<script src="modules/mobile-UI/include/js/jquery.mobile.min.js"></script>
 <?php
 include_once "common.php";
 
