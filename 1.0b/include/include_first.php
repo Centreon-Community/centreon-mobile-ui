@@ -1,6 +1,6 @@
 
 <?php
-	ini_set("display_errors", "Off");
+	ini_set("display_errors", "On");
 	/*
 	 * Define Local Functions
 	 *   - remove SQL Injection : Thanks to Julien CAYSSOL

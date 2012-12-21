@@ -11,8 +11,11 @@ require_once "include_first.php";
 //---------------------------------------------------------------------------------------------------------------------------------------------
 //---------------------------------------------------------------------------------------------------------------------------------------------
 
+/*on inclus les fichiers communs*/
 include_once "common.php";
+include "queries/queries_common.php";
 
+/*récupération des variables passées en url ou création*/
 if (isset ($_GET['nb']) && ctype_digit ($_GET['nb'])){
 	$nb = $_GET['nb'];}
 else {$nb = 5;}
@@ -21,8 +24,10 @@ if(isset ($_GET['page']) && ctype_digit ($_GET['page'])) {
 $page = $_GET['page'];}
 else  { $page = 0; }
 
-$opt_icon_size = mysql_query  ('SELECT * FROM '.$conf_centreon['db'].'.mui_opts mui_opts WHERE (mui_opts.opt_type = "opt_gen") AND (mui_opts.opt_label = "size_icons") AND (mui_opts.user_id = "'.$centreon->user->user_id.'")');
-$opt_icon_show = mysql_query  ('SELECT * FROM '.$conf_centreon['db'].'.mui_opts mui_opts WHERE (mui_opts.opt_type = "opt_gen") AND (mui_opts.opt_label = "show_icons") AND (mui_opts.user_id = "'.$centreon->user->user_id.'")');
+/*sélection du fichier contenant les requetes*/
+include $Broker_queries_path.'queries_hosts.php';
+
+/*on execute les requetes nécessaires à la page*/	
 $obj_opt_icon_size = mysql_fetch_object ($opt_icon_size);
 $obj_opt_icon_show = mysql_fetch_object ($opt_icon_show);
 
@@ -30,138 +35,30 @@ if (isset ($_POST['search_input']) or (isset ($_GET['search'])))
 	{
 	if (isset ($_POST['search_input'])){$search = $_POST['search_input'];}
 	elseif (isset ($_GET['search'])){$search = $_GET['search'];}
-	$query_host_status =	'SELECT 
-							'.$ndoDB_assoc["db_prefix"].'hosts.host_id,
-							'.$ndoDB_assoc["db_prefix"].'hosts.config_type,
-							'.$ndoDB_assoc["db_prefix"].'hosts.display_name,
-							'.$ndoDB_assoc["db_prefix"].'hoststatus.current_state,
-							'.$ndoDB_assoc["db_prefix"].'hosts.alias,
-							'.$ndoDB_assoc["db_prefix"].'hosts.address,
-							'.$ndoDB_assoc["db_prefix"].'hoststatus.hoststatus_id,
-							'.$ndoDB_assoc["db_prefix"].'hosts.icon_image
-							FROM '.$ndoDB_assoc["db_name"].'.'.$ndoDB_assoc["db_prefix"].'hoststatus '.$ndoDB_assoc["db_prefix"].'hoststatus
-							INNER JOIN
-							'.$ndoDB_assoc["db_name"].'.'.$ndoDB_assoc["db_prefix"].'hosts '.$ndoDB_assoc["db_prefix"].'hosts
-							ON ('.$ndoDB_assoc["db_prefix"].'hoststatus.host_object_id = '.$ndoDB_assoc["db_prefix"].'hosts.host_object_id)
-							WHERE ('.$ndoDB_assoc["db_prefix"].'hosts.config_type = 0)
-							AND (('.$ndoDB_assoc["db_prefix"].'hosts.display_name LIKE "%'.$search.'%")
-							OR ('.$ndoDB_assoc["db_prefix"].'hosts.alias LIKE "%'.$search.'%")
-							OR ('.$ndoDB_assoc["db_prefix"].'hosts.address LIKE "%'.$search.'%"))
-							LIMIT '.($page * $nb).','.$nb.'';
-	$result_query_host_status = mysql_query ($query_host_status);
-	$count_selected_hosts =	'SELECT COUNT(*)
-							FROM '.$ndoDB_assoc["db_name"].'.'.$ndoDB_assoc["db_prefix"].'hoststatus '.$ndoDB_assoc["db_prefix"].'hoststatus
-							INNER JOIN
-							'.$ndoDB_assoc["db_name"].'.'.$ndoDB_assoc["db_prefix"].'hosts '.$ndoDB_assoc["db_prefix"].'hosts
-							ON ('.$ndoDB_assoc["db_prefix"].'hoststatus.host_object_id = '.$ndoDB_assoc["db_prefix"].'hosts.host_object_id)
-							WHERE ('.$ndoDB_assoc["db_prefix"].'hosts.config_type = 0)
-							AND (('.$ndoDB_assoc["db_prefix"].'hosts.display_name LIKE "%'.$search.'%")
-							OR ('.$ndoDB_assoc["db_prefix"].'hosts.alias LIKE "%'.$search.'%")
-							OR ('.$ndoDB_assoc["db_prefix"].'hosts.address LIKE "%'.$search.'%"))';
-	$query_count_selected_hosts = mysql_query($count_selected_hosts);
+	$result_query_host_status = mysql_query ($query_host_status_1);
+	$query_count_selected_hosts = mysql_query($count_selected_hosts_1);
 	$row_count_selected_hosts = mysql_fetch_row($query_count_selected_hosts);
 	$total_count_selected_hosts = $row_count_selected_hosts[0];
 	$max_pg = ceil($total_count_selected_hosts / $nb);
 	}
 else {
 
-	if (!isset ($_GET['inerror']))
+	if (!isset ($_GET['inerror']) or ($_GET['inerror'] == 2))
 		{
 		$inerror = "2";
-		$query_host_status =	'SELECT 
-								'.$ndoDB_assoc["db_prefix"].'hosts.host_id,
-								'.$ndoDB_assoc["db_prefix"].'hosts.config_type,
-								'.$ndoDB_assoc["db_prefix"].'hosts.alias,
-								'.$ndoDB_assoc["db_prefix"].'hoststatus.hoststatus_id,
-								'.$ndoDB_assoc["db_prefix"].'hoststatus.current_state,
-								'.$ndoDB_assoc["db_prefix"].'hoststatus.last_state_change,
-								'.$ndoDB_assoc["db_prefix"].'hoststatus.last_hard_state_change,
-								'.$ndoDB_assoc["db_prefix"].'hoststatus.last_time_up,
-								'.$ndoDB_assoc["db_prefix"].'hoststatus.last_time_down,
-								'.$ndoDB_assoc["db_prefix"].'hosts.icon_image
-								FROM '.$ndoDB_assoc["db_name"].'.'.$ndoDB_assoc["db_prefix"].'hoststatus '.$ndoDB_assoc["db_prefix"].'hoststatus
-								INNER JOIN
-								'.$ndoDB_assoc["db_name"].'.'.$ndoDB_assoc["db_prefix"].'hosts '.$ndoDB_assoc["db_prefix"].'hosts
-								ON ('.$ndoDB_assoc["db_prefix"].'hoststatus.host_object_id = '.$ndoDB_assoc["db_prefix"].'hosts.host_object_id)
-								WHERE ('.$ndoDB_assoc["db_prefix"].'hosts.config_type = 0)
-								LIMIT '.($page * $nb).','.$nb.'';
-		$count_selected_hosts =	'SELECT COUNT(*)
-								FROM '.$ndoDB_assoc["db_name"].'.'.$ndoDB_assoc["db_prefix"].'hoststatus '.$ndoDB_assoc["db_prefix"].'hoststatus
-								INNER JOIN
-								'.$ndoDB_assoc["db_name"].'.'.$ndoDB_assoc["db_prefix"].'hosts '.$ndoDB_assoc["db_prefix"].'hosts
-								ON ('.$ndoDB_assoc["db_prefix"].'hoststatus.host_object_id = '.$ndoDB_assoc["db_prefix"].'hosts.host_object_id)
-								WHERE ('.$ndoDB_assoc["db_prefix"].'hosts.config_type = 0)';
-		$query_count_selected_hosts = mysql_query($count_selected_hosts);
+		$result_query_host_status = mysql_query ($query_host_status_2) or die (mysql_error());
+		$query_count_selected_hosts = mysql_query($count_selected_hosts_2);
 		$row_count_selected_hosts = mysql_fetch_row($query_count_selected_hosts);
 		$total_count_selected_hosts = $row_count_selected_hosts[0];
 		$max_pg = ceil($total_count_selected_hosts / $nb);
+		
 		}
 
 	elseif ($_GET['inerror'] == 1)
 		{
 		$inerror = "1";
-		$query_host_status =	'SELECT 
-								'.$ndoDB_assoc["db_prefix"].'hosts.host_id,
-								'.$ndoDB_assoc["db_prefix"].'hosts.config_type,
-								'.$ndoDB_assoc["db_prefix"].'hosts.alias,
-								'.$ndoDB_assoc["db_prefix"].'hoststatus.hoststatus_id,
-								'.$ndoDB_assoc["db_prefix"].'hoststatus.current_state,
-								'.$ndoDB_assoc["db_prefix"].'hoststatus.last_state_change,
-								'.$ndoDB_assoc["db_prefix"].'hoststatus.last_hard_state_change,
-								'.$ndoDB_assoc["db_prefix"].'hoststatus.last_time_up,
-								'.$ndoDB_assoc["db_prefix"].'hoststatus.last_time_down,
-								'.$ndoDB_assoc["db_prefix"].'hosts.icon_image
-								FROM '.$ndoDB_assoc["db_name"].'.'.$ndoDB_assoc["db_prefix"].'hoststatus '.$ndoDB_assoc["db_prefix"].'hoststatus
-								INNER JOIN
-								'.$ndoDB_assoc["db_name"].'.'.$ndoDB_assoc["db_prefix"].'hosts '.$ndoDB_assoc["db_prefix"].'hosts
-								ON ('.$ndoDB_assoc["db_prefix"].'hoststatus.host_object_id = '.$ndoDB_assoc["db_prefix"].'hosts.host_object_id)
-								WHERE (('.$ndoDB_assoc["db_prefix"].'hoststatus.current_state = 1)
-								OR ('.$ndoDB_assoc["db_prefix"].'hoststatus.current_state = 2)
-								OR ('.$ndoDB_assoc["db_prefix"].'hoststatus.current_state = 3))
-								AND ('.$ndoDB_assoc["db_prefix"].'hosts.config_type = 0)
-								LIMIT '.($page * $nb).','.$nb.'';
-		$count_selected_hosts =	'SELECT COUNT(*)
-								FROM '.$ndoDB_assoc["db_name"].'.'.$ndoDB_assoc["db_prefix"].'hoststatus '.$ndoDB_assoc["db_prefix"].'hoststatus
-								INNER JOIN
-								'.$ndoDB_assoc["db_name"].'.'.$ndoDB_assoc["db_prefix"].'hosts '.$ndoDB_assoc["db_prefix"].'hosts
-								ON ('.$ndoDB_assoc["db_prefix"].'hoststatus.host_object_id = '.$ndoDB_assoc["db_prefix"].'hosts.host_object_id)
-								WHERE (('.$ndoDB_assoc["db_prefix"].'hoststatus.current_state = 1)
-								OR ('.$ndoDB_assoc["db_prefix"].'hoststatus.current_state = 2)
-								OR ('.$ndoDB_assoc["db_prefix"].'hoststatus.current_state = 3))
-								AND ('.$ndoDB_assoc["db_prefix"].'hosts.config_type = 0)';
-		$query_count_selected_hosts = mysql_query($count_selected_hosts);
-		$row_count_selected_hosts = mysql_fetch_row($query_count_selected_hosts);
-		$total_count_selected_hosts = $row_count_selected_hosts[0];
-		$max_pg = ceil($total_count_selected_hosts / $nb);
-		}
-
-	elseif ($_GET['inerror'] == 2)
-		{
-		$inerror = "2";
-		$query_host_status =	'SELECT 
-								'.$ndoDB_assoc["db_prefix"].'hosts.host_id,
-								'.$ndoDB_assoc["db_prefix"].'hosts.config_type,
-								'.$ndoDB_assoc["db_prefix"].'hosts.alias,
-								'.$ndoDB_assoc["db_prefix"].'hoststatus.hoststatus_id,
-								'.$ndoDB_assoc["db_prefix"].'hoststatus.current_state,
-								'.$ndoDB_assoc["db_prefix"].'hoststatus.last_state_change,
-								'.$ndoDB_assoc["db_prefix"].'hoststatus.last_hard_state_change,
-								'.$ndoDB_assoc["db_prefix"].'hoststatus.last_time_up,
-								'.$ndoDB_assoc["db_prefix"].'hoststatus.last_time_down,
-								'.$ndoDB_assoc["db_prefix"].'hosts.icon_image
-								FROM '.$ndoDB_assoc["db_name"].'.'.$ndoDB_assoc["db_prefix"].'hoststatus '.$ndoDB_assoc["db_prefix"].'hoststatus
-								INNER JOIN
-								'.$ndoDB_assoc["db_name"].'.'.$ndoDB_assoc["db_prefix"].'hosts '.$ndoDB_assoc["db_prefix"].'hosts
-								ON ('.$ndoDB_assoc["db_prefix"].'hoststatus.host_object_id = '.$ndoDB_assoc["db_prefix"].'hosts.host_object_id)
-								WHERE ('.$ndoDB_assoc["db_prefix"].'hosts.config_type = 0)
-								LIMIT '.($page * $nb).','.$nb.'';
-		$count_selected_hosts =	'SELECT COUNT(*)
-								FROM '.$ndoDB_assoc["db_name"].'.'.$ndoDB_assoc["db_prefix"].'hoststatus '.$ndoDB_assoc["db_prefix"].'hoststatus
-								INNER JOIN
-								'.$ndoDB_assoc["db_name"].'.'.$ndoDB_assoc["db_prefix"].'hosts '.$ndoDB_assoc["db_prefix"].'hosts
-								ON ('.$ndoDB_assoc["db_prefix"].'hoststatus.host_object_id = '.$ndoDB_assoc["db_prefix"].'hosts.host_object_id)
-								WHERE ('.$ndoDB_assoc["db_prefix"].'hosts.config_type = 0)';
-		$query_count_selected_hosts = mysql_query($count_selected_hosts);
+		$result_query_host_status = mysql_query ($query_host_status_3);
+		$query_count_selected_hosts = mysql_query($count_selected_hosts_3);
 		$row_count_selected_hosts = mysql_fetch_row($query_count_selected_hosts);
 		$total_count_selected_hosts = $row_count_selected_hosts[0];
 		$max_pg = ceil($total_count_selected_hosts / $nb);
@@ -169,38 +66,16 @@ else {
 	
 	else 	{
 			$inerror = "2";
-			$query_host_status =	'SELECT 
-									'.$ndoDB_assoc["db_prefix"].'hosts.host_id,
-									'.$ndoDB_assoc["db_prefix"].'hosts.config_type,
-									'.$ndoDB_assoc["db_prefix"].'hosts.alias,
-									'.$ndoDB_assoc["db_prefix"].'hoststatus.hoststatus_id,
-									'.$ndoDB_assoc["db_prefix"].'hoststatus.current_state,
-									'.$ndoDB_assoc["db_prefix"].'hoststatus.last_state_change,
-									'.$ndoDB_assoc["db_prefix"].'hoststatus.last_hard_state_change,
-									'.$ndoDB_assoc["db_prefix"].'hoststatus.last_time_up,
-									'.$ndoDB_assoc["db_prefix"].'hoststatus.last_time_down,
-									'.$ndoDB_assoc["db_prefix"].'hosts.icon_image
-									FROM '.$ndoDB_assoc["db_name"].'.'.$ndoDB_assoc["db_prefix"].'hoststatus '.$ndoDB_assoc["db_prefix"].'hoststatus
-									INNER JOIN
-									'.$ndoDB_assoc["db_name"].'.'.$ndoDB_assoc["db_prefix"].'hosts '.$ndoDB_assoc["db_prefix"].'hosts
-									ON ('.$ndoDB_assoc["db_prefix"].'hoststatus.host_object_id = '.$ndoDB_assoc["db_prefix"].'hosts.host_object_id)
-									WHERE ('.$ndoDB_assoc["db_prefix"].'hosts.config_type = 0)
-									LIMIT '.($page * $nb).','.$nb.'';
-			$count_selected_hosts =	'SELECT COUNT(*)
-									FROM '.$ndoDB_assoc["db_name"].'.'.$ndoDB_assoc["db_prefix"].'hoststatus '.$ndoDB_assoc["db_prefix"].'hoststatus
-									INNER JOIN
-									'.$ndoDB_assoc["db_name"].'.'.$ndoDB_assoc["db_prefix"].'hosts '.$ndoDB_assoc["db_prefix"].'hosts
-									ON ('.$ndoDB_assoc["db_prefix"].'hoststatus.host_object_id = '.$ndoDB_assoc["db_prefix"].'hosts.host_object_id)
-									WHERE ('.$ndoDB_assoc["db_prefix"].'hosts.config_type = 0)';
-			$query_count_selected_hosts = mysql_query($count_selected_hosts);
+			$result_query_host_status = mysql_query ($query_host_status_4);
+			$query_count_selected_hosts = mysql_query($count_selected_hosts_4);
 			$row_count_selected_hosts = mysql_fetch_row($query_count_selected_hosts);
 			$total_count_selected_hosts = $row_count_selected_hosts[0];
 			$max_pg = ceil($total_count_selected_hosts / $nb);
 			}
 		}
 
-$result_query_host_status = mysql_query ($query_host_status);
 
+/*on inclus le header*/
 include ("header.php");
 ?>
 
@@ -430,7 +305,7 @@ include ("header.php");
 										<div>
 											<table class="tbl-host-status">
 												<tr>';
-													if ($obj_opt_icon_show->opt_val == 1)
+													if (($obj_opt_icon_show->opt_val == 1) && ($obj_query_host_status->icon_image != null))
 														{
 														echo '	<td class="td1-host-status">
 																	<img src="icone.php?HostIconPath='.$obj_query_host_status->icon_image.'&IconSize='.$obj_opt_icon_size->opt_val.'&hst=1" />
