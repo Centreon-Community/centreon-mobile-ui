@@ -129,7 +129,7 @@ msgid "General options"
 msgstr "Options g&eacute;n&eacute;rales"
 
 msgid "Theme"
-msgstr "Th&eagrave;"
+msgstr "Th&egrave;"
 
 msgid "Show hosts and services icons"
 msgstr "Afficher les icones des hotes et services"
@@ -211,3 +211,6 @@ msgstr "Maximum utilis&eacute;"
 
 msgid "Total available"
 msgstr "Total disponible"
+
+msgid "Your Broker is not currently supported"
+msgstr "Votre Broker n'est pas encore pris en charge"
