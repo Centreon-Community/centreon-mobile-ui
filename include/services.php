@@ -34,6 +34,7 @@ if (isset ($_POST['search_input']) or (isset ($_GET['search'])))
 	$query_service_status 	=	'SELECT 
 								'.$ndoDB_assoc["db_prefix"].'hosts.host_id,
 								'.$ndoDB_assoc["db_prefix"].'hosts.alias,
+								'.$ndoDB_assoc["db_prefix"].'hosts.display_name AS hostname,
 								'.$ndoDB_assoc["db_prefix"].'services.service_id,
 								'.$ndoDB_assoc["db_prefix"].'services.display_name,
 								'.$ndoDB_assoc["db_prefix"].'services.icon_image,
@@ -79,6 +80,7 @@ else {
 		$query_service_status	=	'SELECT 
 									'.$ndoDB_assoc["db_prefix"].'hosts.host_id,
 									'.$ndoDB_assoc["db_prefix"].'hosts.alias,
+									'.$ndoDB_assoc["db_prefix"].'hosts.display_name AS hostname,
 									'.$ndoDB_assoc["db_prefix"].'hosts.config_type,
 									'.$ndoDB_assoc["db_prefix"].'services.service_id,
 									'.$ndoDB_assoc["db_prefix"].'services.config_type,
@@ -124,6 +126,7 @@ else {
 		$query_service_status 	=	'SELECT 
 									'.$ndoDB_assoc["db_prefix"].'hosts.host_id,
 									'.$ndoDB_assoc["db_prefix"].'hosts.alias,
+									'.$ndoDB_assoc["db_prefix"].'hosts.display_name AS hostname,
 									'.$ndoDB_assoc["db_prefix"].'hosts.config_type,
 									'.$ndoDB_assoc["db_prefix"].'services.service_id,
 									'.$ndoDB_assoc["db_prefix"].'services.config_type,
@@ -177,6 +180,7 @@ else {
 		$query_service_status 	=	'SELECT 
 									'.$ndoDB_assoc["db_prefix"].'hosts.host_id,
 									'.$ndoDB_assoc["db_prefix"].'hosts.alias,
+									'.$ndoDB_assoc["db_prefix"].'hosts.display_name AS hostname,
 									'.$ndoDB_assoc["db_prefix"].'hosts.config_type,
 									'.$ndoDB_assoc["db_prefix"].'services.service_id,
 									'.$ndoDB_assoc["db_prefix"].'services.config_type,
@@ -221,6 +225,7 @@ else {
 			$query_service_status 	=	'SELECT 
 										'.$ndoDB_assoc["db_prefix"].'hosts.host_id,
 										'.$ndoDB_assoc["db_prefix"].'hosts.alias,
+										'.$ndoDB_assoc["db_prefix"].'hosts.display_name AS hostname,
 										'.$ndoDB_assoc["db_prefix"].'hosts.config_type,
 										'.$ndoDB_assoc["db_prefix"].'services.service_id,
 										'.$ndoDB_assoc["db_prefix"].'services.config_type,
@@ -474,11 +479,11 @@ include ("header.php");
 						{ 
 							echo '	
 									<li class="list-item-services">
-									<a data-transition="slideup" href="service_details.php?host_id='.$obj_service_status->host_id.'&service_id='.$obj_service_status->service_id.'&status_id='.$obj_service_status->servicestatus_id.'&inerror='.$inerror.'">
+									<a data-transition="slideup" href="service_details.php?host_id='.$obj_service_status->host_id.'&service_id='.$obj_service_status->service_id.'&hostname='.$obj_service_status->hostname.'&service='.$obj_service_status->display_name.'&status_id='.$obj_service_status->servicestatus_id.'&inerror='.$inerror.'">
 										<div>
 											<table class="tbl-service-status">
 												<tr>';
-													if ($obj_opt_icon_show->opt_val == 1)
+													if (($obj_opt_icon_show->opt_val == 1)  && ($obj_service_status->icon_image != null))
 														{
 														echo '	<td class="td1-host-status">
 																	<img src="icone.php?HostIconPath='.$obj_service_status->icon_image.'&IconSize='.$obj_opt_icon_size->opt_val.'"svce=1" />
