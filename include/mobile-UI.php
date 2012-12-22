@@ -45,7 +45,6 @@ HTML
 				<td width="1%"></td>
 				<td style="text-align:center; width:98%">IT & Network Monitoring</td>
 				<td width="1%"></td>
-				</tr>
 			</table>
 			</font>
 			<h6>

@@ -12,7 +12,9 @@ require_once "include_first.php";
 //---------------------------------------------------------------------------------------------------------------------------------------------
 //---------------------------------------------------------------------------------------------------------------------------------------------
 
+/*on inclus les fichiers communs*/
 include_once "common.php";
+include "queries/queries_common.php";
 
 if (isset ($_GET['nb']) && ctype_digit ($_GET['nb'])){
 	$nb = $_GET['nb'];}
@@ -22,8 +24,6 @@ if(isset ($_GET['page']) && ctype_digit($_GET['page'])) {
 $page = $_GET['page'];}
 else  { $page = 0; }
 
-$opt_icon_size = mysql_query  ('SELECT * FROM '.$conf_centreon['db'].'.mui_opts mui_opts WHERE (mui_opts.opt_type = "opt_gen") AND (mui_opts.opt_label = "size_icons") AND (mui_opts.user_id = "'.$centreon->user->user_id.'")');
-$opt_icon_show = mysql_query  ('SELECT * FROM '.$conf_centreon['db'].'.mui_opts mui_opts WHERE (mui_opts.opt_type = "opt_gen") AND (mui_opts.opt_label = "show_icons") AND (mui_opts.user_id = "'.$centreon->user->user_id.'")');
 $obj_opt_icon_size = mysql_fetch_object ($opt_icon_size);
 $obj_opt_icon_show = mysql_fetch_object ($opt_icon_show);
 
@@ -31,90 +31,24 @@ if (isset ($_POST['search_input']) or (isset ($_GET['search'])))
 	{
 	if (isset ($_POST['search_input'])){$search = $_POST['search_input'];}
 	elseif (isset ($_GET['search'])){$search = $_GET['search'];}
-	$query_service_status 	=	'SELECT 
-								'.$ndoDB_assoc["db_prefix"].'hosts.host_id,
-								'.$ndoDB_assoc["db_prefix"].'hosts.alias,
-								'.$ndoDB_assoc["db_prefix"].'hosts.display_name AS hostname,
-								'.$ndoDB_assoc["db_prefix"].'services.service_id,
-								'.$ndoDB_assoc["db_prefix"].'services.display_name,
-								'.$ndoDB_assoc["db_prefix"].'services.icon_image,
-								'.$ndoDB_assoc["db_prefix"].'servicestatus.servicestatus_id
-								FROM
-								('.$ndoDB_assoc["db_name"].'.'.$ndoDB_assoc["db_prefix"].'services '.$ndoDB_assoc["db_prefix"].'services
-								INNER JOIN
-								'.$ndoDB_assoc["db_name"].'.'.$ndoDB_assoc["db_prefix"].'hosts '.$ndoDB_assoc["db_prefix"].'hosts
-								ON ('.$ndoDB_assoc["db_prefix"].'services.host_object_id = '.$ndoDB_assoc["db_prefix"].'hosts.host_object_id))
-								INNER JOIN
-								'.$ndoDB_assoc["db_name"].'.'.$ndoDB_assoc["db_prefix"].'servicestatus '.$ndoDB_assoc["db_prefix"].'servicestatus
-								ON ('.$ndoDB_assoc["db_prefix"].'servicestatus.service_object_id =
-								'.$ndoDB_assoc["db_prefix"].'services.service_object_id)
-								WHERE (('.$ndoDB_assoc["db_prefix"].'hosts.config_type = 0)
-								AND ('.$ndoDB_assoc["db_prefix"].'services.config_type = 0))
-								AND (('.$ndoDB_assoc["db_prefix"].'services.display_name LIKE "%'.$search.'%")
-								OR ('.$ndoDB_assoc["db_prefix"].'hosts.alias LIKE "%'.$search.'%"))
-								LIMIT '.($page * $nb).','.$nb.'';
-	$count_selected_service =	'SELECT COUNT(*)
-								FROM
-								('.$ndoDB_assoc["db_name"].'.'.$ndoDB_assoc["db_prefix"].'services '.$ndoDB_assoc["db_prefix"].'services
-								INNER JOIN
-								'.$ndoDB_assoc["db_name"].'.'.$ndoDB_assoc["db_prefix"].'hosts '.$ndoDB_assoc["db_prefix"].'hosts
-								ON ('.$ndoDB_assoc["db_prefix"].'services.host_object_id = '.$ndoDB_assoc["db_prefix"].'hosts.host_object_id))
-								INNER JOIN
-								'.$ndoDB_assoc["db_name"].'.'.$ndoDB_assoc["db_prefix"].'servicestatus '.$ndoDB_assoc["db_prefix"].'servicestatus
-								ON ('.$ndoDB_assoc["db_prefix"].'servicestatus.service_object_id =
-								'.$ndoDB_assoc["db_prefix"].'services.service_object_id)
-								WHERE (('.$ndoDB_assoc["db_prefix"].'hosts.config_type = 0)
-								AND ('.$ndoDB_assoc["db_prefix"].'services.config_type = 0))
-								AND (('.$ndoDB_assoc["db_prefix"].'services.display_name LIKE "%'.$search.'%")
-								OR ('.$ndoDB_assoc["db_prefix"].'hosts.alias LIKE "%'.$search.'%"))';
-	$query_count_selected_service = mysql_query($count_selected_service);
+	/*sélection du fichier contenant les requetes*/
+	include $Broker_queries_path.'queries_services_1.php';
+	$result_service_status = mysql_query ($query_service_status_1);
+	$query_count_selected_service = mysql_query($count_selected_service_1);
 	$row_count_selected_service = mysql_fetch_row($query_count_selected_service);
 	$total_count_selected_service = $row_count_selected_service[0];
 	$max_pg = ceil($total_count_selected_service / $nb);
+	$get_error = mysql_fetch_object ($query_service_status_1);
+	$inerror = $query_service_status_1->current_state;
 	}
 else {
-
+	/*sélection du fichier contenant les requetes*/
+	include $Broker_queries_path.'queries_services.php';
 	if (!isset ($_GET['inerror']))
 		{
 		$inerror = "2";
-		$query_service_status	=	'SELECT 
-									'.$ndoDB_assoc["db_prefix"].'hosts.host_id,
-									'.$ndoDB_assoc["db_prefix"].'hosts.alias,
-									'.$ndoDB_assoc["db_prefix"].'hosts.display_name AS hostname,
-									'.$ndoDB_assoc["db_prefix"].'hosts.config_type,
-									'.$ndoDB_assoc["db_prefix"].'services.service_id,
-									'.$ndoDB_assoc["db_prefix"].'services.config_type,
-									'.$ndoDB_assoc["db_prefix"].'services.display_name,
-									'.$ndoDB_assoc["db_prefix"].'services.icon_image,
-									'.$ndoDB_assoc["db_prefix"].'servicestatus.servicestatus_id,
-									'.$ndoDB_assoc["db_prefix"].'servicestatus.output,
-									'.$ndoDB_assoc["db_prefix"].'servicestatus.current_state,
-									'.$ndoDB_assoc["db_prefix"].'servicestatus.last_state_change
-									FROM
-									('.$ndoDB_assoc["db_name"].'.'.$ndoDB_assoc["db_prefix"].'services '.$ndoDB_assoc["db_prefix"].'services
-									INNER JOIN
-									'.$ndoDB_assoc["db_name"].'.'.$ndoDB_assoc["db_prefix"].'hosts '.$ndoDB_assoc["db_prefix"].'hosts
-									ON ('.$ndoDB_assoc["db_prefix"].'services.host_object_id = '.$ndoDB_assoc["db_prefix"].'hosts.host_object_id))
-									INNER JOIN
-									'.$ndoDB_assoc["db_name"].'.'.$ndoDB_assoc["db_prefix"].'servicestatus '.$ndoDB_assoc["db_prefix"].'servicestatus
-									ON ('.$ndoDB_assoc["db_prefix"].'servicestatus.service_object_id =
-									'.$ndoDB_assoc["db_prefix"].'services.service_object_id)
-									WHERE (('.$ndoDB_assoc["db_prefix"].'hosts.config_type = 0)
-									AND('.$ndoDB_assoc["db_prefix"].'services.config_type = 0))
-									LIMIT '.($page * $nb).','.$nb.'';
-		$count_selected_service =	'SELECT COUNT(*)
-									FROM
-									('.$ndoDB_assoc["db_name"].'.'.$ndoDB_assoc["db_prefix"].'services '.$ndoDB_assoc["db_prefix"].'services
-									INNER JOIN
-									'.$ndoDB_assoc["db_name"].'.'.$ndoDB_assoc["db_prefix"].'hosts '.$ndoDB_assoc["db_prefix"].'hosts
-									ON ('.$ndoDB_assoc["db_prefix"].'services.host_object_id = '.$ndoDB_assoc["db_prefix"].'hosts.host_object_id))
-									INNER JOIN
-									'.$ndoDB_assoc["db_name"].'.'.$ndoDB_assoc["db_prefix"].'servicestatus '.$ndoDB_assoc["db_prefix"].'servicestatus
-									ON ('.$ndoDB_assoc["db_prefix"].'servicestatus.service_object_id =
-									'.$ndoDB_assoc["db_prefix"].'services.service_object_id)
-									WHERE (('.$ndoDB_assoc["db_prefix"].'hosts.config_type = 0)
-									AND('.$ndoDB_assoc["db_prefix"].'services.config_type = 0))';
-		$query_count_selected_service = mysql_query($count_selected_service);
+		$result_service_status = mysql_query ($query_service_status_2);
+		$query_count_selected_service = mysql_query($count_selected_service_2);
 		$row_count_selected_service = mysql_fetch_row($query_count_selected_service);
 		$total_count_selected_service = $row_count_selected_service[0];
 		$max_pg = ceil($total_count_selected_service / $nb);
@@ -123,52 +57,8 @@ else {
 	elseif ($_GET['inerror'] == 1)
 		{
 		$inerror = "1";
-		$query_service_status 	=	'SELECT 
-									'.$ndoDB_assoc["db_prefix"].'hosts.host_id,
-									'.$ndoDB_assoc["db_prefix"].'hosts.alias,
-									'.$ndoDB_assoc["db_prefix"].'hosts.display_name AS hostname,
-									'.$ndoDB_assoc["db_prefix"].'hosts.config_type,
-									'.$ndoDB_assoc["db_prefix"].'services.service_id,
-									'.$ndoDB_assoc["db_prefix"].'services.config_type,
-									'.$ndoDB_assoc["db_prefix"].'services.display_name,
-									'.$ndoDB_assoc["db_prefix"].'services.icon_image,
-									'.$ndoDB_assoc["db_prefix"].'servicestatus.servicestatus_id,
-									'.$ndoDB_assoc["db_prefix"].'servicestatus.output,
-									'.$ndoDB_assoc["db_prefix"].'servicestatus.current_state,
-									'.$ndoDB_assoc["db_prefix"].'servicestatus.last_state_change
-									FROM
-									('.$ndoDB_assoc["db_name"].'.'.$ndoDB_assoc["db_prefix"].'services '.$ndoDB_assoc["db_prefix"].'services
-									INNER JOIN
-									'.$ndoDB_assoc["db_name"].'.'.$ndoDB_assoc["db_prefix"].'hosts '.$ndoDB_assoc["db_prefix"].'hosts
-									ON ('.$ndoDB_assoc["db_prefix"].'services.host_object_id = '.$ndoDB_assoc["db_prefix"].'hosts.host_object_id))
-									INNER JOIN
-									'.$ndoDB_assoc["db_name"].'.'.$ndoDB_assoc["db_prefix"].'servicestatus '.$ndoDB_assoc["db_prefix"].'servicestatus
-									ON ('.$ndoDB_assoc["db_prefix"].'servicestatus.service_object_id =
-									'.$ndoDB_assoc["db_prefix"].'services.service_object_id)
-									WHERE (('.$ndoDB_assoc["db_prefix"].'servicestatus.current_state = 1)
-									OR ('.$ndoDB_assoc["db_prefix"].'servicestatus.current_state = 2)
-									OR ('.$ndoDB_assoc["db_prefix"].'servicestatus.current_state = 3)
-									OR ('.$ndoDB_assoc["db_prefix"].'servicestatus.current_state = 4))
-									AND('.$ndoDB_assoc["db_prefix"].'hosts.config_type = 0)
-									AND('.$ndoDB_assoc["db_prefix"].'services.config_type = 0)
-									LIMIT '.($page * $nb).','.$nb.'';
-		$count_selected_service =	'SELECT COUNT(*)
-									FROM
-									('.$ndoDB_assoc["db_name"].'.'.$ndoDB_assoc["db_prefix"].'services '.$ndoDB_assoc["db_prefix"].'services
-									INNER JOIN
-									'.$ndoDB_assoc["db_name"].'.'.$ndoDB_assoc["db_prefix"].'hosts '.$ndoDB_assoc["db_prefix"].'hosts
-									ON ('.$ndoDB_assoc["db_prefix"].'services.host_object_id = '.$ndoDB_assoc["db_prefix"].'hosts.host_object_id))
-									INNER JOIN
-									'.$ndoDB_assoc["db_name"].'.'.$ndoDB_assoc["db_prefix"].'servicestatus '.$ndoDB_assoc["db_prefix"].'servicestatus
-									ON ('.$ndoDB_assoc["db_prefix"].'servicestatus.service_object_id =
-									'.$ndoDB_assoc["db_prefix"].'services.service_object_id)
-									WHERE (('.$ndoDB_assoc["db_prefix"].'servicestatus.current_state = 1)
-									OR ('.$ndoDB_assoc["db_prefix"].'servicestatus.current_state = 2)
-									OR ('.$ndoDB_assoc["db_prefix"].'servicestatus.current_state = 3)
-									OR ('.$ndoDB_assoc["db_prefix"].'servicestatus.current_state = 4))
-									AND('.$ndoDB_assoc["db_prefix"].'hosts.config_type = 0)
-									AND('.$ndoDB_assoc["db_prefix"].'services.config_type = 0)';
-		$query_count_selected_service = mysql_query($count_selected_service);
+		$result_service_status = mysql_query ($query_service_status_3);
+		$query_count_selected_service = mysql_query($count_selected_service_3);
 		$row_count_selected_service = mysql_fetch_row($query_count_selected_service);
 		$total_count_selected_service = $row_count_selected_service[0];
 		$max_pg = ceil($total_count_selected_service / $nb);
@@ -177,44 +67,8 @@ else {
 	elseif ($_GET['inerror'] == 2)
 		{
 		$inerror = "2";
-		$query_service_status 	=	'SELECT 
-									'.$ndoDB_assoc["db_prefix"].'hosts.host_id,
-									'.$ndoDB_assoc["db_prefix"].'hosts.alias,
-									'.$ndoDB_assoc["db_prefix"].'hosts.display_name AS hostname,
-									'.$ndoDB_assoc["db_prefix"].'hosts.config_type,
-									'.$ndoDB_assoc["db_prefix"].'services.service_id,
-									'.$ndoDB_assoc["db_prefix"].'services.config_type,
-									'.$ndoDB_assoc["db_prefix"].'services.display_name,
-									'.$ndoDB_assoc["db_prefix"].'services.icon_image,
-									'.$ndoDB_assoc["db_prefix"].'servicestatus.servicestatus_id,
-									'.$ndoDB_assoc["db_prefix"].'servicestatus.output,
-									'.$ndoDB_assoc["db_prefix"].'servicestatus.current_state,
-									'.$ndoDB_assoc["db_prefix"].'servicestatus.last_state_change
-									FROM
-									('.$ndoDB_assoc["db_name"].'.'.$ndoDB_assoc["db_prefix"].'services '.$ndoDB_assoc["db_prefix"].'services
-									INNER JOIN
-									'.$ndoDB_assoc["db_name"].'.'.$ndoDB_assoc["db_prefix"].'hosts '.$ndoDB_assoc["db_prefix"].'hosts
-									ON ('.$ndoDB_assoc["db_prefix"].'services.host_object_id = '.$ndoDB_assoc["db_prefix"].'hosts.host_object_id))
-									INNER JOIN
-									'.$ndoDB_assoc["db_name"].'.'.$ndoDB_assoc["db_prefix"].'servicestatus '.$ndoDB_assoc["db_prefix"].'servicestatus
-									ON ('.$ndoDB_assoc["db_prefix"].'servicestatus.service_object_id =
-									'.$ndoDB_assoc["db_prefix"].'services.service_object_id)
-									WHERE (('.$ndoDB_assoc["db_prefix"].'hosts.config_type = 0)
-									AND('.$ndoDB_assoc["db_prefix"].'services.config_type = 0))
-									LIMIT '.($page * $nb).','.$nb.'';
-		$count_selected_service =	'SELECT COUNT(*)
-									FROM
-									('.$ndoDB_assoc["db_name"].'.'.$ndoDB_assoc["db_prefix"].'services '.$ndoDB_assoc["db_prefix"].'services
-									INNER JOIN
-									'.$ndoDB_assoc["db_name"].'.'.$ndoDB_assoc["db_prefix"].'hosts '.$ndoDB_assoc["db_prefix"].'hosts
-									ON ('.$ndoDB_assoc["db_prefix"].'services.host_object_id = '.$ndoDB_assoc["db_prefix"].'hosts.host_object_id))
-									INNER JOIN
-									'.$ndoDB_assoc["db_name"].'.'.$ndoDB_assoc["db_prefix"].'servicestatus '.$ndoDB_assoc["db_prefix"].'servicestatus
-									ON ('.$ndoDB_assoc["db_prefix"].'servicestatus.service_object_id =
-									'.$ndoDB_assoc["db_prefix"].'services.service_object_id)
-									WHERE (('.$ndoDB_assoc["db_prefix"].'hosts.config_type = 0)
-									AND('.$ndoDB_assoc["db_prefix"].'services.config_type = 0))';
-		$query_count_selected_service = mysql_query($count_selected_service);
+		$result_service_status = mysql_query ($query_service_status_4);
+		$query_count_selected_service = mysql_query($count_selected_service_4);
 		$row_count_selected_service = mysql_fetch_row($query_count_selected_service);
 		$total_count_selected_service = $row_count_selected_service[0];
 		$max_pg = ceil($total_count_selected_service / $nb);
@@ -222,51 +76,13 @@ else {
 	
 	else 	{
 			$inerror = "2";
-			$query_service_status 	=	'SELECT 
-										'.$ndoDB_assoc["db_prefix"].'hosts.host_id,
-										'.$ndoDB_assoc["db_prefix"].'hosts.alias,
-										'.$ndoDB_assoc["db_prefix"].'hosts.display_name AS hostname,
-										'.$ndoDB_assoc["db_prefix"].'hosts.config_type,
-										'.$ndoDB_assoc["db_prefix"].'services.service_id,
-										'.$ndoDB_assoc["db_prefix"].'services.config_type,
-										'.$ndoDB_assoc["db_prefix"].'services.display_name,
-										'.$ndoDB_assoc["db_prefix"].'services.icon_image,
-										'.$ndoDB_assoc["db_prefix"].'servicestatus.servicestatus_id,
-										'.$ndoDB_assoc["db_prefix"].'servicestatus.output,
-										'.$ndoDB_assoc["db_prefix"].'servicestatus.current_state,
-										'.$ndoDB_assoc["db_prefix"].'servicestatus.last_state_change
-										FROM
-										('.$ndoDB_assoc["db_name"].'.'.$ndoDB_assoc["db_prefix"].'services '.$ndoDB_assoc["db_prefix"].'services
-										INNER JOIN
-										'.$ndoDB_assoc["db_name"].'.'.$ndoDB_assoc["db_prefix"].'hosts '.$ndoDB_assoc["db_prefix"].'hosts
-										ON ('.$ndoDB_assoc["db_prefix"].'services.host_object_id = '.$ndoDB_assoc["db_prefix"].'hosts.host_object_id))
-										INNER JOIN
-										'.$ndoDB_assoc["db_name"].'.'.$ndoDB_assoc["db_prefix"].'servicestatus '.$ndoDB_assoc["db_prefix"].'servicestatus
-										ON ('.$ndoDB_assoc["db_prefix"].'servicestatus.service_object_id =
-										'.$ndoDB_assoc["db_prefix"].'services.service_object_id)
-										WHERE (('.$ndoDB_assoc["db_prefix"].'hosts.config_type = 0)
-										AND('.$ndoDB_assoc["db_prefix"].'services.config_type = 0))
-										LIMIT '.($page * $nb).','.$nb.'';
-			$count_selected_service =	'SELECT COUNT(*)
-										FROM
-										('.$ndoDB_assoc["db_name"].'.'.$ndoDB_assoc["db_prefix"].'services '.$ndoDB_assoc["db_prefix"].'services
-										INNER JOIN
-										'.$ndoDB_assoc["db_name"].'.'.$ndoDB_assoc["db_prefix"].'hosts '.$ndoDB_assoc["db_prefix"].'hosts
-										ON ('.$ndoDB_assoc["db_prefix"].'services.host_object_id = '.$ndoDB_assoc["db_prefix"].'hosts.host_object_id))
-										INNER JOIN
-										'.$ndoDB_assoc["db_name"].'.'.$ndoDB_assoc["db_prefix"].'servicestatus '.$ndoDB_assoc["db_prefix"].'servicestatus
-										ON ('.$ndoDB_assoc["db_prefix"].'servicestatus.service_object_id =
-										'.$ndoDB_assoc["db_prefix"].'services.service_object_id)
-										WHERE (('.$ndoDB_assoc["db_prefix"].'hosts.config_type = 0)
-										AND('.$ndoDB_assoc["db_prefix"].'services.config_type = 0))';
-			$query_count_selected_service = mysql_query($count_selected_service);
+			$result_service_status = mysql_query ($query_service_status_5);
+			$query_count_selected_service = mysql_query($count_selected_service_5);
 			$row_count_selected_service = mysql_fetch_row($query_count_selected_service);
 			$total_count_selected_service = $row_count_selected_service[0];
 			$max_pg = ceil($total_count_selected_service / $nb);
 			}
 		}
-
-$result_service_status = mysql_query ($query_service_status);
 
 include ("header.php");
 ?>

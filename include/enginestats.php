@@ -1,29 +1,19 @@
 <?php
 require_once "include_first.php";
+
+/*on inclus les fichiers communs*/
 include_once "common.php";
+include "queries/queries_common.php";
 
 if (isset ($_GET['instance_id']))
 {$instance_id = $_GET['instance_id'];}
 else {$instance_id = null;}
 
-$query_instances =	'SELECT
-					instance.instance_id,
-					instance.instance_name
-					FROM
-					'.$conf_centreon['dbcstg'].'.instance instance';
-$result_instances = mysql_query ($query_instances);
-
-$query_enginestats =	'SELECT 
-						nagios_stats.stat_value
-						FROM
-						'.$conf_centreon['dbcstg'].'.nagios_stats nagios_stats
-						INNER JOIN
-						'.$conf_centreon['dbcstg'].'.instance instance
-						ON
-						(nagios_stats.instance_id = instance.instance_id)
-						WHERE
-						(instance.instance_id = '.$instance_id.')';						
+/*sélection du fichier contenant les requetes*/
+include $Broker_queries_path.'queries_enginestats.php';
+				
 $result_enginestats = mysql_query ($query_enginestats);
+
 ?>
 
 <!------------------------------------------------------------------------------------------------------------------------------------------
@@ -41,17 +31,6 @@ HTML
 <?php
 include ("header.php");
 ?>
-
-<script>
- $(document).ready(function() {
- 	 $("#div_recap").load("recap.php");
-   var refreshId = setInterval(function() {
-      $("#div_recap").load('recap.php');
-   }, 10000);  
-};
-</script>
-	
-
 
 	<div data-role="page">
 	
