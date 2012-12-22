@@ -50,8 +50,14 @@ HTML
 			<font size="2">
 			<table width="100%">
 				<td width="1%"></td>
-				<td style="text-align:center; width:98%"><?php echo _("Service detailed status")?></td>
-				<td width="1%"></td>
+				<td style="text-align:center; width:98%"></td>
+				<td width="1%">
+					<a href="#popup_graphe_id" data-role="button" data-rel="popup" data-transition="flip" data-position-to="window"><img src="img/chart.gif"></a>
+					<div data-role="popup" class="popup_graphe" id="popup_graphe_id">
+					<a href="#" data-rel="back" data-role="button" data-icon="delete" data-iconpos="notext" class="ui-btn-right">Close</a>
+					<img class="graphe_img" src="../../../include/views/graphs/generateGraphs/generateImage.php?session_id=<?php echo $obj_session_id->session_id; ?>&index=<?php echo $obj_metric_details->id; ?>&end=<?php echo time(); ?>&start=<?php echo time()-(60*60*24); ?>">
+					</div>
+				</td>
 				</tr>
 			</table>
 			</font>	
@@ -147,7 +153,6 @@ HTML
 				<font>
 				<?php echo ''.$obj_details_service->output.''; ?>
 				<br />
-				<img src="../../../include/views/graphs/generateGraphs/generateImage.php?session_id=<?php echo $obj_session_id->session_id; ?>&index=<?php echo $obj_metric_details->id; ?>&end=<?php echo time(); ?>&start=<?php echo time()-(60*60*24); ?>">
 				</font>
 			</div>
 		</div>
