@@ -9,47 +9,15 @@ require_once "include_first.php";
 //--------------------------------------------------------------------------------------------------------------------------------------------
 //--------------------------------------------------------------------------------------------------------------------------------------------
 
+/*on inclus les fichiers communs*/
 include_once "common.php";
+include "queries/queries_common.php";
 
 $host_id = $_GET['host'];
 $hoststatus_id = $_GET['statusid'];
 
-$query_details_host=	'SELECT '.$ndoDB_assoc["db_prefix"].'hosts.alias,
-       '.$ndoDB_assoc["db_prefix"].'hoststatus.current_state,
-       '.$ndoDB_assoc["db_prefix"].'hosts.display_name,
-       '.$ndoDB_assoc["db_prefix"].'hosts.address,
-       '.$ndoDB_assoc["db_prefix"].'hoststatus.output,
-       '.$ndoDB_assoc["db_prefix"].'hoststatus.has_been_checked,
-       '.$ndoDB_assoc["db_prefix"].'hoststatus.current_check_attempt,
-       '.$ndoDB_assoc["db_prefix"].'hoststatus.max_check_attempts,
-       '.$ndoDB_assoc["db_prefix"].'hoststatus.status_update_time,
-       '.$ndoDB_assoc["db_prefix"].'hoststatus.last_check,
-       '.$ndoDB_assoc["db_prefix"].'hoststatus.next_check,
-       '.$ndoDB_assoc["db_prefix"].'hoststatus.last_state_change,
-       '.$ndoDB_assoc["db_prefix"].'hoststatus.last_time_up,
-       '.$ndoDB_assoc["db_prefix"].'hoststatus.last_time_down,
-       '.$ndoDB_assoc["db_prefix"].'hoststatus.last_time_unreachable,
-       '.$ndoDB_assoc["db_prefix"].'hoststatus.state_type,
-	   '.$ndoDB_assoc["db_prefix"].'hoststatus.execution_time,
-       '.$ndoDB_assoc["db_prefix"].'hoststatus.notifications_enabled,
-       '.$ndoDB_assoc["db_prefix"].'hoststatus.problem_has_been_acknowledged,
-       '.$ndoDB_assoc["db_prefix"].'hoststatus.acknowledgement_type,
-       '.$ndoDB_assoc["db_prefix"].'hoststatus.passive_checks_enabled,
-       '.$ndoDB_assoc["db_prefix"].'hoststatus.active_checks_enabled,
-       '.$ndoDB_assoc["db_prefix"].'hoststatus.event_handler_enabled,
-       '.$ndoDB_assoc["db_prefix"].'hoststatus.percent_state_change,
-       '.$ndoDB_assoc["db_prefix"].'hoststatus.latency,
-       '.$ndoDB_assoc["db_prefix"].'hoststatus.execution_time,
-       '.$ndoDB_assoc["db_prefix"].'hosts.config_type,
-       '.$ndoDB_assoc["db_prefix"].'hosts.host_id,
-       '.$ndoDB_assoc["db_prefix"].'hoststatus.hoststatus_id
-  FROM    '.$ndoDB_assoc["db_name"].'.'.$ndoDB_assoc["db_prefix"].'hoststatus '.$ndoDB_assoc["db_prefix"].'hoststatus
-       INNER JOIN
-          '.$ndoDB_assoc["db_name"].'.'.$ndoDB_assoc["db_prefix"].'hosts '.$ndoDB_assoc["db_prefix"].'hosts
-       ON ('.$ndoDB_assoc["db_prefix"].'hoststatus.host_object_id = '.$ndoDB_assoc["db_prefix"].'hosts.host_object_id)
- WHERE     ('.$ndoDB_assoc["db_prefix"].'hosts.config_type = 0)
-       AND ('.$ndoDB_assoc["db_prefix"].'hosts.host_id = '.$host_id.')
-       AND ('.$ndoDB_assoc["db_prefix"].'hoststatus.hoststatus_id = '.$hoststatus_id.')';
+/*sélection du fichier contenant les requetes*/
+include $Broker_queries_path.'queries_host_details.php';
 
 $result_details_host = mysql_query ($query_details_host);
 $obj_details_host = mysql_fetch_object ($result_details_host);

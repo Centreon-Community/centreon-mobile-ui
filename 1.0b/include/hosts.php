@@ -24,8 +24,6 @@ if(isset ($_GET['page']) && ctype_digit ($_GET['page'])) {
 $page = $_GET['page'];}
 else  { $page = 0; }
 
-/*sélection du fichier contenant les requetes*/
-include $Broker_queries_path.'queries_hosts.php';
 
 /*on execute les requetes nécessaires à la page*/	
 $obj_opt_icon_size = mysql_fetch_object ($opt_icon_size);
@@ -35,14 +33,19 @@ if (isset ($_POST['search_input']) or (isset ($_GET['search'])))
 	{
 	if (isset ($_POST['search_input'])){$search = $_POST['search_input'];}
 	elseif (isset ($_GET['search'])){$search = $_GET['search'];}
+	/*sélection du fichier contenant les requetes*/
+	include $Broker_queries_path.'queries_hosts_1.php';
 	$result_query_host_status = mysql_query ($query_host_status_1);
 	$query_count_selected_hosts = mysql_query($count_selected_hosts_1);
 	$row_count_selected_hosts = mysql_fetch_row($query_count_selected_hosts);
 	$total_count_selected_hosts = $row_count_selected_hosts[0];
 	$max_pg = ceil($total_count_selected_hosts / $nb);
+	$get_error = mysql_fetch_object ($query_host_status_1);
+	$inerror = $query_host_status_1->current_state;
 	}
 else {
-
+	/*sélection du fichier contenant les requetes*/
+	include $Broker_queries_path.'queries_hosts.php';
 	if (!isset ($_GET['inerror']) or ($_GET['inerror'] == 2))
 		{
 		$inerror = "2";
