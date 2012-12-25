@@ -49,19 +49,33 @@ HTML
 		<div data-role="content">
 			<font size="2">
 			<table width="100%">
+
 				<td width="1%"></td>
 				<td style="text-align:center; width:98%"></td>
 				<td width="1%">
-					<a href="#popup_graphe_id" data-role="button" data-rel="popup" data-transition="flip" data-position-to="window"><img src="img/chart.gif"></a>
-					<div data-role="popup" class="popup_graphe" id="popup_graphe_id">
-					<a href="#" data-rel="back" data-role="button" data-icon="delete" data-iconpos="notext" class="ui-btn-right">Close</a>
-					<img class="graphe_img" src="../../../include/views/graphs/generateGraphs/generateImage.php?session_id=<?php echo $obj_session_id->session_id; ?>&index=<?php echo $obj_metric_details->id; ?>&end=<?php echo time(); ?>&start=<?php echo time()-(60*60*24); ?>">
-					</div>
+					<a href="#popup_graphe_id" data-role="button" data-rel="popup" data-position-to="window"><img src="img/chart.gif"></a>
+						<div data-role="popup" class="popup_graphe" id="popup_graphe_id" data-theme="<?php echo $theme;?>" data-overlay-theme="<?php echo $theme;?>">
+							<a href="#" data-rel="back" data-role="button" data-icon="delete" data-iconpos="notext" class="ui-btn-right">Close</a>
+
+							<img id="graphe_img_jour" src="../../../include/views/graphs/generateGraphs/generateImage.php?session_id=<?php echo $obj_session_id->session_id; ?>&index=<?php echo $obj_metric_details->id; ?>&end=<?php echo time(); ?>&start=<?php echo time()-(60*60*24); ?>">
+							<img id="graphe_img_mois" src="../../../include/views/graphs/generateGraphs/generateImage.php?session_id=<?php echo $obj_session_id->session_id; ?>&index=<?php echo $obj_metric_details->id; ?>&end=<?php echo time(); ?>&start=<?php echo time()-(60*60*24*31); ?>">
+							<img id="graphe_img_an" src="../../../include/views/graphs/generateGraphs/generateImage.php?session_id=<?php echo $obj_session_id->session_id; ?>&index=<?php echo $obj_metric_details->id; ?>&end=<?php echo time(); ?>&start=<?php echo time()-(60*60*24*365); ?>">
+							
+							<span class="btns_graphes">
+							<fieldset data-role="controlgroup" data-type="horizontal" data-mini="true">  	
+								<input type="radio" name="radio-choice-2" id="radio-choice-21" value="choice-1" checked="checked" OnClick="affiche_jour('graphe_img_jour');cache_mois('graphe_img_mois');cache_an('graphe_img_an')"/>
+									<label for="radio-choice-21">1 jour</label>
+								<input type="radio" name="radio-choice-2" id="radio-choice-22" value="choice-2" OnClick="cache_jour('graphe_img_jour');affiche_mois('graphe_img_mois');cache_an('graphe_img_an')" />
+									<label for="radio-choice-22">31 jours</label>
+								<input type="radio" name="radio-choice-2" id="radio-choice-23" value="choice-3" OnClick="cache_jour('graphe_img_jour');cache_mois('graphe_img_mois');affiche_an('graphe_img_an')" />
+									<label for="radio-choice-23">365 jours</label>
+							</fieldset>
+						</div>
 				</td>
 				</tr>
 			</table>
 			</font>	
-			
+			</div>
 			<h6>
 				<font color="#30536D"><b><?php echo _("Name:")?></font></b>
 					<?php echo ''.$obj_details_service->display_name.' '.$obj_details_service->alias.'' ; ?>

@@ -184,6 +184,34 @@ Détail des hotes et services
 	{
 	border:1px solid #19EE11;
 	}
+#graphe_img_jour
+	{
+	margin-left:3px;
+	margin-right:3px;
+	margin-top:4px;
+	max-width:98%;
+	display:block;
+	}
+#graphe_img_mois
+	{
+	margin-left:3px;
+	margin-right:3px;
+	margin-top:4px;
+	max-width:98%;
+	display:none;
+	}
+#graphe_img_an
+	{
+	margin-left:3px;
+	margin-right:3px;
+	margin-top:4px;
+	max-width:98%;
+	display:none;
+	}
+.btns_graphes
+	{
+	text-align:center;
+	}
 	
 /*************************************
 Options
