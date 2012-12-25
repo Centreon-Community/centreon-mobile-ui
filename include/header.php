@@ -12,7 +12,8 @@
 <!--Import CSS & Javascript-->
 	
 	<link href="../css/themes/default/jquery.mobile.min.css" rel="stylesheet" type="text/css" />
-	<script src="js/jquery.min.js"></script><script type="text/javascript" src="js/mobile-UI.js"></script>
+	<script src="js/jquery.min.js"></script>
+	<script src="js/mobile-UI.js"></script>
 	<script src="js/jquery.mobile.min.js"></script>
 	<link href="../css/style-mobile.css" rel="stylesheet" type="text/css"/>
 	
