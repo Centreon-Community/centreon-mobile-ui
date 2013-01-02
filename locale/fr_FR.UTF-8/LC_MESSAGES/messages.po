@@ -1,4 +1,3 @@
-
 msgid "Centreon mobile UI"
 msgstr "Centreon mobile UI"
 
@@ -62,6 +61,24 @@ msgstr "Back"
 msgid "details"
 msgstr "D&eacute;tails"
 
+msgid "Acknowledge this problem"
+msgstr "Acquitter ce probl&egrave;me"
+
+msgid "Delete acknowledgement"
+msgstr "Supprimer cet acquit"
+
+msgid "Acknowledge"
+msgstr "Acquitter"
+
+msgid "Notify"
+msgstr "Notifier"
+
+msgid "Sticky"
+msgstr "&Eacute;pingl&eacute;"
+
+msgid "Persistent"
+msgstr "Persistant"
+
 msgid "Host detailed status"
 msgstr "Statut d&eacute;taill&eacute; de l'h&ocirc;te"
 
@@ -93,7 +110,7 @@ msgid "Last change"
 msgstr "Dernier changement:"
 
 msgid "Notifications enabled?"
-msgstr "Notifications activ&eacute;?"
+msgstr "Notifications activ&eacute;es?"
 
 msgid "Yes"
 msgstr "Oui"
@@ -129,7 +146,7 @@ msgid "General options"
 msgstr "Options g&eacute;n&eacute;rales"
 
 msgid "Theme"
-msgstr "Th&egrave;"
+msgstr "Th&egrave;me"
 
 msgid "Show hosts and services icons"
 msgstr "Afficher les icones des hotes et services"

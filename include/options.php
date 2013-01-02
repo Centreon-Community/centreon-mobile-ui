@@ -54,7 +54,7 @@ HTML
             <h1><?php echo _("Options")?></h1>
 		</div>
 			
-		<div data-role="content">
+		<div data-role="content" data-theme="<?php echo $theme;?>">
 			<form action="options.php" method="post">
 			<?php 	
 					echo '<h4>';echo _("General options");echo '<h4>';
