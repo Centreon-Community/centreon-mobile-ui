@@ -1,6 +1,25 @@
 /***********************
 General
 ***********************/
+@media only screen and (-webkit-min-device-pixel-ratio: 2) {
+	.ui-icon-coche-verte {
+		background-image: url("../include/img/app-icon-cocheverte-highres.png");
+		background-size: 18px 18px;
+	}
+	.ui-icon-coche-grise {
+		background-image: url("../include/img/app-icon-cochegrise-highres.png");
+		background-size: 18px 18px;
+	}
+}
+.ui-icon-coche-verte {
+	background-image: url("../include/img/app-icon-cocheverte.png");
+}
+.ui-icon-coche-grise {
+	background-image: url("../include/img/app-icon-cochegrise.png");
+}
+.ui-icon-line-chart {
+	background-image: url("../include/img/app-icon-line-chart.png");
+}
 table
 {
 	font-size:8pt;
@@ -49,7 +68,33 @@ div
 	{
 	text-align:center;
 	}
-
+.content_small
+	{
+	font-size:8pt;
+	}
+.content_med
+	{
+	font-size:12pt;
+	}
+.content_big
+	{
+	font-size:15pt;
+	}
+.content_small_bold
+	{
+	font-size:8pt;
+	font-weight:bold;
+	}
+.content_med_bold
+	{
+	font-size:12pt;
+	font-weight:bold;
+	}
+.content_big_bold
+	{
+	font-size:15pt;
+	font-weight:bold;
+	}
 /************************
 Tableau récap
 ************************/
@@ -212,7 +257,9 @@ Détail des hotes et services
 	{
 	text-align:center;
 	}
-	
+#popup_ack_id
+	{
+	}
 /*************************************
 Options
 *************************************/	
