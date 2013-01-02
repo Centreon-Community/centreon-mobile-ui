@@ -37,7 +37,7 @@ HTML
             <h1><?php echo _("Details")?></h1>
         </div>
 		
-		<div data-role="content">
+		<div data-role="content" data-theme="<?php echo $theme;?>">
 			<font size="2">
 			<table width="100%">
 				<td width="1%"></td>
@@ -123,13 +123,14 @@ HTML
 					</div>
 				</li>
 			</ul>
-			<div>
-				<font><?php echo _("Host detailed status:")?></font>
+			<div data-role="content" data-theme="<?php echo $theme;?>">
+				<span><?php echo _("Host detailed status:")?></span>
 				<br />
-				<font><?php echo ''.$obj_details_host->output.''; ?></font>
+				<span><?php echo ''.$obj_details_host->output.''; ?></span>
 			</div>
 			</h6>
 		</div>
+		<div data-role="footer" data-theme="<?php echo $theme;?>">
 	</div>
 </body>
 </html>

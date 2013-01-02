@@ -330,6 +330,7 @@ include ("header.php");
 				
 			</ul></div>
 		</div>
+	<div data-role="footer" data-theme="<?php echo $theme;?>">
 	</div>
 </body>
 </html>

@@ -306,7 +306,7 @@ include ("header.php");
 																</td>';
 														}
 							echo'					<td class="td2-service-status"><font size="2">
-													'.$obj_service_status->alias.'
+													'.$obj_service_status->alias.'<br />&rarr; '.$obj_service_status->display_name.'
 													</td>
 													<td class=td3-service-status">
 														<img src="img/std_small_service_'.$obj_service_status->current_state.'.png" />
@@ -321,6 +321,8 @@ include ("header.php");
 				?>
 			</ul>
 		</div>
+	</div>
+	<div stat-role="footer">
 	</div>
 </body>
 </html>
