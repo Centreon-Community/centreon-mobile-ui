@@ -9,7 +9,7 @@
 //>>---------------------------------<<//
 
 
-					
+/*					
 $acknowledgement_1 = 		'UPDATE '.$ndoDB_assoc["db_prefix"].'.servicestatus
 							SET '.$ndoDB_assoc["db_prefix"].'servicestatus.problem_has_been_acknowledged = "1"
 							WHERE '.$ndoDB_assoc["db_prefix"].'servicestatus.servicestatus_id =	'.$servicestatus_id.'';
@@ -42,5 +42,17 @@ $acknowledgement_2 =		'INSERT INTO '.$ndoDB_assoc["db_prefix"].'.acknowledgement
 							"'.$post_persistent.'",
 							"'.$post_notify.'")
 							';
+*/
+							
+$query_metric_exist =		'SELECT index_data.id
+							FROM (centstorage.metrics metrics
+							INNER JOIN
+								centstorage.index_data index_data
+							ON (metrics.index_id = index_data.id))
+							INNER JOIN
+								centstorage.data_bin data_bin
+							ON (data_bin.id_metric = metrics.metric_id)
+							WHERE (index_data.id = '.$obj_metric_details->index_data_id.')
+							GROUP BY index_data.id';
 
 ?>

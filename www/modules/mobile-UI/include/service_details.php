@@ -34,6 +34,13 @@ $obj_metric_details = mysql_fetch_object ($result_metric_details);
 $result_session_id = mysql_query ($query_session_id);
 $obj_session_id = mysql_fetch_object ($result_session_id);
 
+/*sélection du fichier contenant les requetes*/
+include $Broker_queries_path.'queries_service_details_2.php';
+
+/*on execute les requetes nécessaires à la page*/
+$result_metric_exist = mysql_query ($query_metric_exist);
+$nbr_metric_exist = mysql_num_rows ($result_metric_exist);
+
 /*on inclus le header*/
 include ("header.php");
 
@@ -154,25 +161,26 @@ HTML
 				</td>
 				<td width="5%">&nbsp;</td>
 				<td width="5%">&nbsp;</td>
-				<td width="45%">
+				<td width="45%"><? if ($nbr_metric_exist != 0)
+				{ echo '
 					<a href="#popup_graphe_id" data-role="button" data-rel="popup" data-position-to="window" data-mini="true"><img src="img/chart.gif"></a>
-						<div data-role="popup" class="popup_graphe" id="popup_graphe_id" data-theme="<?php echo $theme;?>" data-overlay-theme="<?php echo $theme;?>">
-							<a href="#" data-rel="back" data-role="button" data-icon="delete" data-iconpos="notext" class="ui-btn-right"><?php echo _("Close");?></a>
+						<div data-role="popup" class="popup_graphe" id="popup_graphe_id" data-theme="'.$theme.'" data-overlay-theme="'.$theme.'">
+							<a href="#" data-rel="back" data-role="button" data-icon="delete" data-iconpos="notext" class="ui-btn-right">'; echo _("Close");echo '</a>
 
-							<img id="graphe_img_jour" src="../../../include/views/graphs/generateGraphs/generateImage.php?session_id=<?php echo $obj_session_id->session_id; ?>&index=<?php echo $obj_metric_details->index_data_id; ?>&end=<?php echo time(); ?>&start=<?php echo time()-(60*60*24); ?>">
-							<img id="graphe_img_mois" src="../../../include/views/graphs/generateGraphs/generateImage.php?session_id=<?php echo $obj_session_id->session_id; ?>&index=<?php echo $obj_metric_details->index_data_id; ?>&end=<?php echo time(); ?>&start=<?php echo time()-(60*60*24*31); ?>">
-							<img id="graphe_img_an" src="../../../include/views/graphs/generateGraphs/generateImage.php?session_id=<?php echo $obj_session_id->session_id; ?>&index=<?php echo $obj_metric_details->index_data_id; ?>&end=<?php echo time(); ?>&start=<?php echo time()-(60*60*24*365); ?>">
+							<img id="graphe_img_jour" src="../../../include/views/graphs/generateGraphs/generateImage.php?session_id='.$obj_session_id->session_id.'&index='.$obj_metric_details->index_data_id.'&end=';echo time(); echo'&start='; echo time()-(60*60*24);echo '">
+							<img id="graphe_img_mois" src="../../../include/views/graphs/generateGraphs/generateImage.php?session_id='.$obj_session_id->session_id.'&index='.$obj_metric_details->index_data_id.'&end=';echo time(); echo '&start='; echo time()-(60*60*24*31);echo '">
+							<img id="graphe_img_an" src="../../../include/views/graphs/generateGraphs/generateImage.php?session_id='.$obj_session_id->session_id.'&index=<'.$obj_metric_details->index_data_id.'&end=';echo time(); echo'&start='; echo time()-(60*60*24*365); echo '">
 							
 							<span class="btns_graphes">
 							<fieldset data-role="controlgroup" data-type="horizontal" data-mini="true">  	
-								<input type="radio" name="radio-choice-2" id="radio-choice-21" value="choice-1" checked="checked" OnClick="affiche_jour('graphe_img_jour');cache_mois('graphe_img_mois');cache_an('graphe_img_an')"/>
-									<label for="radio-choice-21"><?php echo _("1 day");?></label>
-								<input type="radio" name="radio-choice-2" id="radio-choice-22" value="choice-2" OnClick="cache_jour('graphe_img_jour');affiche_mois('graphe_img_mois');cache_an('graphe_img_an')" />
-									<label for="radio-choice-22"><?php echo _("31 days");?></label>
-								<input type="radio" name="radio-choice-2" id="radio-choice-23" value="choice-3" OnClick="cache_jour('graphe_img_jour');cache_mois('graphe_img_mois');affiche_an('graphe_img_an')" />
-									<label for="radio-choice-23"><?php echo _("365 days");?></label>
+								<input type="radio" name="radio-choice-2" id="radio-choice-21" value="choice-1" checked="checked" OnClick="affiche_jour("graphe_img_jour");cache_mois("graphe_img_mois");cache_an("graphe_img_an")"/>
+									<label for="radio-choice-21">'; echo _("1 day");echo '</label>
+								<input type="radio" name="radio-choice-2" id="radio-choice-22" value="choice-2" OnClick="cache_jour("graphe_img_jour");affiche_mois("graphe_img_mois");cache_an("graphe_img_an")" />
+									<label for="radio-choice-22">'; echo _("31 days");echo '</label>
+								<input type="radio" name="radio-choice-2" id="radio-choice-23" value="choice-3" OnClick="cache_jour("graphe_img_jour");cache_mois("graphe_img_mois");affiche_an("graphe_img_an")" />
+									<label for="radio-choice-23">';echo _("365 days"); echo '</label>
 							</fieldset>
-						</div>
+						</div>';}?>
 				</td>
 				</tr>
 			</table>
