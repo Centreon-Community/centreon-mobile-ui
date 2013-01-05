@@ -65,6 +65,16 @@ include ("header.php");
 			</td>
 			</tr>
 			</table>
+			<?php 
+			if (is_null ($instance_id))
+			{
+			echo _("Select a poller");
+			echo "</div>
+				</div>
+				</body>
+				</html>";
+			exit();}
+			?>
 			<font size="1">
 			<table width="100%">
 				<tr style="border:1px solid #fffff2">
