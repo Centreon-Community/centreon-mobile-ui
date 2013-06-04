@@ -1,3 +1,102 @@
+msgid "Development:"
+msgstr "Développement"
+
+msgid "Your engine is not currently supported"
+msgstr "Votre machine n'est pas supportée actuellement"
+
+msgid "Select a poller"
+msgstr "Selectionner un Poller"
+
+msgid "Check latency"
+msgstr "Latence relevé"
+
+msgid "Acknowledge Services"
+msgstr "Acquitter les services"
+
+msgid "Delete Ack"
+msgstr "Supprimer Ack"
+
+msgid "Author"
+msgstr "Auteur"
+
+msgid "Comment"
+msgstr "Commentaire"
+
+msgid "Confirm"
+msgstr "Confirmer"
+
+msgid "Cancel"
+msgstr "Annuler"
+
+msgid "Add a Downtime"
+msgstr "Ajouter un Temps d'arrêt"
+
+msgid "Downtime"
+msgstr "Temps d'arrêt"
+
+msgid "Start"
+msgstr "Début"
+
+msgid "End"
+msgstr "Fin"
+
+msgid "Duration"
+msgstr "Durée"
+
+msgid "Fixed"
+msgstr "Fixe"
+
+msgid "Downtime Host's Services"
+msgstr "Ajouter temps d'arrêt au services de l'hôte"
+
+msgid "Host Status"
+msgstr "Statut de l'Hôte"
+
+msgid "Active notifications?"
+msgstr "Notifications actives?"
+
+msgid "Start Date"
+msgstr "Date de début"
+
+msgid "End Date"
+msgstr "Date de fin"
+
+msgid "Ongowing"
+msgstr "En Cours"
+
+msgid "Delete"
+msgstr "Supprimer"
+
+msgid "Downtime Ongowing"
+msgstr "Temps d'ârret en cours"
+
+msgid "Acknowledged"
+msgstr "Acquittement"
+
+msgid "Close"
+msgstr "Fermer"
+
+msgid "1 day"
+msgstr "1 jour"
+
+msgid "31 days"
+msgstr "31 jours"
+
+msgid "365 days"
+msgstr "365 jours"
+
+msgid "Next check"
+msgstr "Prochaine Verification"
+
+msgid "Active checks"
+msgstr "Verifications Actives"
+
+msgid "Passive checks"
+msgstr "Verifications Passives"
+
+msgid "Delete Downtime"
+msgstr "Supprimer Temps d'arrêt"
+
 msgid "Centreon mobile UI"
 msgstr "Centreon mobile UI"
 
@@ -124,7 +223,7 @@ msgstr "Contr&ocirc;les actifs?"
 msgid "Passives checks"
 msgstr "Contr&ocirc;les passifs?"
 
-msgid "Detailed status:"
+msgid "Detailed status"
 msgstr "Statut d&eacute;taill&eacute;:"
 
 msgid "All services"

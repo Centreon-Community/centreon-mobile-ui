@@ -8,21 +8,19 @@ $(document).bind('mobileinit',function(){
    $.mobile.changePage.defaults.reloadPage = true;
 });
 
-function affiche_jour(id){
-	document.getElementById('graphe_img_jour').style.display='block';
+function change_src(modif_src)
+{
+	document.getElementById('graphe_img').src = modif_src;
+}
+
+function change_gris()
+{
+	if(document.getElementById('durer').disabled == true)
+	{
+		document.getElementById('durer').disabled = false;
 	}
-function affiche_mois(id){
-	document.getElementById('graphe_img_mois').style.display='block';
+	else
+	{
+		document.getElementById('durer').disabled = true;
 	}
-function affiche_an(id){
-	document.getElementById('graphe_img_an').style.display='block';
-	}
-function cache_jour(id){
-	document.getElementById('graphe_img_jour').style.display='none';
-	}
-function cache_mois(id){
-	document.getElementById('graphe_img_mois').style.display='none';
-	}
-function cache_an(id){
-document.getElementById('graphe_img_an').style.display='none';
-	}
+}

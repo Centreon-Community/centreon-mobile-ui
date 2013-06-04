@@ -12,7 +12,7 @@
 								'.$ndoDB_assoc["db_prefix"].'hosts.alias AS host_alias,
 								'.$ndoDB_assoc["db_prefix"].'hosts.display_name AS host_display_name,
 								'.$ndoDB_assoc["db_prefix"].'services.service_id,
-								'.$ndoDB_assoc["db_prefix"].'services.display_name AS service_display_name,
+								'.$ndoDB_assoc["db_prefix"].'objects.name2 AS service_display_name,
 								'.$ndoDB_assoc["db_prefix"].'servicestatus.servicestatus_id,
 								'.$ndoDB_assoc["db_prefix"].'servicestatus.instance_id,								
 								'.$ndoDB_assoc["db_prefix"].'servicestatus.output,
@@ -52,7 +52,12 @@
 								'.$ndoDB_assoc["db_name"].'.'.$ndoDB_assoc["db_prefix"].'servicestatus '.$ndoDB_assoc["db_prefix"].'servicestatus
 							ON 
 								('.$ndoDB_assoc["db_prefix"].'servicestatus.service_object_id =
-								'.$ndoDB_assoc["db_prefix"].'services.service_object_id))
+								'.$ndoDB_assoc["db_prefix"].'services.service_object_id)
+							INNER JOIN
+								'.$ndoDB_assoc["db_name"].'.'.$ndoDB_assoc["db_prefix"].'objects '.$ndoDB_assoc["db_prefix"].'objects
+							ON 
+								('.$ndoDB_assoc["db_prefix"].'services.service_object_id =
+								'.$ndoDB_assoc["db_prefix"].'objects.object_id))
 							LEFT OUTER JOIN
 								'.$ndoDB_assoc["db_name"].'.'.$ndoDB_assoc["db_prefix"].'acknowledgements '.$ndoDB_assoc["db_prefix"].'acknowledgements
 							ON 
@@ -64,9 +69,6 @@
 							AND 
 								('.$ndoDB_assoc["db_prefix"].'hosts.config_type = 0)';
 
-$query_metric_details = 	'SELECT index_data.id AS index_data_id
-							FROM centstorage.index_data
-							WHERE (index_data.host_name = "'.$hostname.'")
-							AND (index_data.service_description = "'.$service.'")';
+
 
 ?>

@@ -1,0 +1,29 @@
+ChangeLog (Romain) barnoud.romain@gmail.com
+
+**1.5**
+	-menu
+		-add "Unhandled Problems" to filter hosts and services
+	- services-details
+		-modify graph's javascript
+		-add acknowledgement
+		-add disacknowledement
+		-add downtime on a new button
+		-add a table for the list and the states of downtimes
+		-add a button to suppress downtimes in the table
+		-add a frame for the detailed status
+	-hosts-details
+		-add acknowledgement
+		-add disacknowledement
+		-add downtime on a new button
+		-add option to ack services of hosts
+		-add a table for the list and the states of downtimes
+		-add a button to suppress downtimes in the table
+		-add a frame for the detailed status
+	-services
+		-show name but not alias
+		-add icon to see acknowledges and downtimes
+	-host
+		-show name
+		-add icon to see acknowledges and downtimes
+		-add the list of host's services and the pocibility to view details and go back on the host status with the button "back"
+	-translation (FR_fr)

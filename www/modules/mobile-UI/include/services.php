@@ -73,6 +73,15 @@ else {
 		$total_count_selected_service = $row_count_selected_service[0];
 		$max_pg = ceil($total_count_selected_service / $nb);
 		}
+	elseif ($_GET['inerror'] == 3)
+		{
+		$inerror = "3";
+		$result_service_status = mysql_query ($query_service_status_6);
+		$query_count_selected_service = mysql_query($count_selected_service_6);
+		$row_count_selected_service = mysql_fetch_row($query_count_selected_service);
+		$total_count_selected_service = $row_count_selected_service[0];
+		$max_pg = ceil($total_count_selected_service / $nb);
+		}
 	
 	else 	{
 			$inerror = "2";
@@ -107,8 +116,9 @@ include ("header.php");
 			<form method="post">
 				<fieldset data-role="fieldcontain">
 				<select name="host" onChange="location = this.options[this.selectedIndex].value">
-					<option <?php if ($inerror == 2) {echo "selected ";} echo 'value="services.php?inerror=2"';?>><?php echo _("All services")?></option>
+					<option <?php if ($inerror == 3) {echo "selected ";} echo 'value="services.php?inerror=3"';?>><?php echo _("Services Unhandled")?></option>
 					<option <?php if ($inerror == 1) {echo "selected ";} echo 'value="services.php?inerror=1"';?>><?php echo _("Services problems")?></option>
+					<option <?php if ($inerror == 2) {echo "selected ";} echo 'value="services.php?inerror=2"';?>><?php echo _("All services")?></option>
 					<?php if (isset ($_POST['search_input'])or isset ($_GET['search'])) {echo '<option selected>'; echo _("Search results");echo '</option>';}?>
 				</select>
 				</fieldset>
@@ -306,9 +316,38 @@ include ("header.php");
 																</td>';
 														}
 							echo'					<td class="td2-service-status"><font size="2">
-													'.$obj_service_status->alias.'<br />&rarr; '.$obj_service_status->display_name.'
-													</td>
-													<td class=td3-service-status">
+													'.$obj_service_status->hostname.'<br />&rarr; '.$obj_service_status->display_name.'
+													</td><td>';
+
+													/*Requete pour tester le downtime*/
+													$result_down = mysql_query ('SELECT * FROM '.$ndoDB_assoc["db_name"].'.'.$ndoDB_assoc["db_prefix"].'servicestatus WHERE service_object_id = (SELECT '.$ndoDB_assoc["db_prefix"].'services.service_object_id FROM '.$ndoDB_assoc["db_name"].'.'.$ndoDB_assoc["db_prefix"].'services WHERE service_id = "'.$obj_service_status->service_id.'")');
+													/*-----------------------------------------*/
+
+													if(isset ($result_down))
+													{
+														$object_down = mysql_fetch_object($result_down);
+														if ($object_down->scheduled_downtime_depth >= "1")
+														{
+															echo('<img src="img/down-icon.png" title="'); echo _("Downtime Ongowing"); echo ('"  width="20px" height="20px">');
+														}														
+													}
+
+													echo ("</td><td>");
+
+													/*Requete pour tester l'Ack*/
+													$result_ack = mysql_query ('SELECT * FROM '.$ndoDB_assoc["db_name"].'.'.$ndoDB_assoc["db_prefix"].'servicestatus WHERE service_object_id = (SELECT '.$ndoDB_assoc["db_prefix"].'services.service_object_id FROM '.$ndoDB_assoc["db_name"].'.'.$ndoDB_assoc["db_prefix"].'services WHERE service_id = "'.$obj_service_status->service_id.'")');
+													/*-------------------------------*/	
+
+													if(isset($result_ack))
+													{
+														$object_ack = mysql_fetch_object($result_ack);
+															if($object_ack->problem_has_been_acknowledged == "1")
+															{
+																echo ' <img src="img/ack-icon.png" title="'; echo _("Acknowledged"); echo '" width="20px" height="20px"> ';
+															}
+													}
+
+													echo '</td><td class="td3-service-status">
 														<img src="img/std_small_service_'.$obj_service_status->current_state.'.png" />
 													</td>
 												</tr>

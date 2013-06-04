@@ -155,13 +155,13 @@ HTML
 			<h4>
 				<ul data-role="listview" data-inset="true">
 					<li>
-						<a href="hosts.php?inerror=1">
+						<a href="hosts.php?inerror=3">
 							<div><?php  echo _("Hosts")?></div>
 							<span class="ui-li-count"><?php echo $obj_total_host_current_status1+$obj_total_host_current_status2+$obj_total_host_current_status3;?></span>
 						</a>
 					</li>
 					<li>
-						<a href="services.php?inerror=1">
+						<a href="services.php?inerror=3">
 							<div><?php  echo _("Services")?></div>
 							<span class="ui-li-count"><?php echo $obj_total_service_current_status1+$obj_total_service_current_status2+$obj_total_service_current_status3+$obj_total_service_current_status4;?></span>
 						</a>
