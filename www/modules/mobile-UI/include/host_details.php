@@ -192,7 +192,8 @@ HTML
 		<a href="mobile-UI.php" data-role="button" data-icon="home" class="ui-btn-right" data-transition="fade"><?php echo _("Home");?></a>
 		<h1><?php echo _("Details")?></h1>
 	</div>
-			<div data-role="content" data-theme="<?php echo $theme;?>">
+		
+	<div data-role="content" data-theme="<?php echo $theme;?>">
 		<table width="100%">
 			<tr>
 				<td width="50%">	
@@ -441,7 +442,7 @@ HTML
 										$ytime = mktime($y['tm_hour'], $y['tm_min'], $y['tm_sec'], $y['tm_mon']+1 , $y['tm_mday'], $y['tm_year']+1900);
 										if (time() > $xtime && time() < $ytime)
 										{
-											echo "<b><font  color='red'>";echo _("Ongowing"); echo"</font></b>";
+											echo "<b><font  color='red'>";echo _("Ongoing"); echo"</font></b>";
 										}
 						echo '</td><td>';
 						echo '<a href="#popup_ack_id3" data-role="button" data-rel="popup" data-position-to="window" data-mini="true">'; echo _("Delete"); echo '</a>

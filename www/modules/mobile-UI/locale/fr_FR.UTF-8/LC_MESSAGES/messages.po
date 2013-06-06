@@ -61,13 +61,13 @@ msgstr "Date de début"
 msgid "End Date"
 msgstr "Date de fin"
 
-msgid "Ongowing"
+msgid "Ongoing"
 msgstr "En Cours"
 
 msgid "Delete"
 msgstr "Supprimer"
 
-msgid "Downtime Ongowing"
+msgid "Downtime Ongoing"
 msgstr "Temps d'ârret en cours"
 
 msgid "Acknowledged"

@@ -23,8 +23,7 @@ $servicestatus_id = $_GET['status_id'];
 $hostname = $_GET['hostname'];
 $service = $_GET['service'];
 $inerror = $_GET['inerror'];}
-else {exit();}
-/*sélection du fichier contenant les requetes*/
+else {exit();} /*sélection du fichier contenant les requetes*/
 include $Broker_queries_path.'queries_service_details_1.php';
 
 /*on execute les requetes nécessaires à la page*/	
@@ -468,7 +467,7 @@ HTML
 										$ytime = mktime($y['tm_hour'], $y['tm_min'], $y['tm_sec'], $y['tm_mon']+1 , $y['tm_mday'], $y['tm_year']+1900);
 										if (time() > $xtime && time() < $ytime)
 										{
-											echo "<b><font  color='red'>";echo _("Ongowing"); echo"</font></b>";
+											echo "<b><font  color='red'>";echo _("Ongoing"); echo"</font></b>";
 										}
 						echo ('</td><td>');
 						echo '<a href="#popup_ack_id3" data-role="button" data-rel="popup" data-position-to="window" data-mini="true">Supprimer</a>
